@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>975632830435-kihtmrks3pdlmo68i8k8ase4ia5uf0hv.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.975632830435-kihtmrks3pdlmo68i8k8ase4ia5uf0hv</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC6nDo-83zPY6T8AFkHxflQn0QpN9a21xw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>975632830435</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.customHaven</string>
+	<key>PROJECT_ID</key>
+	<string>custom-haven</string>
+	<key>STORAGE_BUCKET</key>
+	<string>custom-haven.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:975632830435:ios:7225ffdef4b1108c</string>
+	<key>DATABASE_URL</key>
+	<string>https://custom-haven.firebaseio.com</string>
+</dict>
+</plist>
