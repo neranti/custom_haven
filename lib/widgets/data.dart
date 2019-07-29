@@ -1,5 +1,9 @@
 // import 'package:custom_haven/';
 
+enum ShoeType {
+  shoe,
+}
+
 class ShoeCardData{
   final String id;
   final String name;

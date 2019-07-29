@@ -2,28 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:custom_haven/widgets/google_sign_in_button.dart';
 import 'package:custom_haven/widgets/bottomnavbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:custom_haven/screens/signup.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+//import 'package:custom_haven/screens/profile.dart';
+//import 'package:custom_haven/sevices/auth_service.dart';
 
-class Testing extends StatelessWidget {
-
-
-
+class LogInFunction extends StatefulWidget{
   @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: new LoginScreen());
-  }
-
-//   Widget _showCircularProgress(){
-//   if (_isLoading) {
-//     return Center(child: CircularProgressIndicator());
-//   } return Container(height: 0.0, width: 0.0,);
-
-// }
+  LoginScreen createState() => LoginScreen();
 }
 
-class LoginScreen extends StatelessWidget {
-
+class LoginScreen extends State<LogInFunction> {
   
   @override
   Widget build(BuildContext context) {
@@ -94,11 +83,56 @@ class Login extends State<LoginState> {
     });
   }
 
-TextEditingController usernameController = new TextEditingController();
+  TextEditingController usernameController = new TextEditingController();
 
 
   void testingMethod() {
     print(usernameController.text);
+  }
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String _loginemail, _loginpassword;
+
+      Future<void> loginWithWithEmailPassword() async{
+      final formState = _formKey.currentState;
+      if(formState.validate()){
+        formState.save();
+        try{
+          FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _loginemail, 
+          password: _loginpassword,
+        );
+          Navigator.push(
+            context, MaterialPageRoute(builder: (context) => ActualNavBarState()),
+          );
+        }catch(e){
+          Scaffold.of(context).showSnackBar(
+            SnackBar(content: Text('Your password or email is invalid.')));
+        }
+      }
+    }
+
+  GoogleSignIn _loginWithGoogle = new GoogleSignIn(
+   scopes: [
+      'email',
+      'https://www.googleapis.com/auth/contacts.readonly',
+   ],
+  );
+
+  initLogin() {
+    _loginWithGoogle.onCurrentUserChanged.listen((GoogleSignInAccount account) async {
+      if (account != null) {
+        // user logged
+      } else {
+        // user NOT logged
+      }
+    });
+    _loginWithGoogle.signInSilently();
+  }
+
+  doLogin() async {
+    //showLoading();
+    await _loginWithGoogle.signIn();
   }
 
   @override
@@ -106,12 +140,14 @@ TextEditingController usernameController = new TextEditingController();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: new Scaffold(
-        body: SafeArea(
+        body: Form(
+          key: _formKey,
           child: ListView(
             padding: EdgeInsets.symmetric(horizontal: 20.0),
             children: <Widget>[
               SizedBox(height: 100.0),
-              TextField(
+              TextFormField(
+                onSaved: (input) => _loginemail = input,
                 controller: usernameController,
                 decoration: InputDecoration(
                   prefixIcon: IconButton(
@@ -126,11 +162,18 @@ TextEditingController usernameController = new TextEditingController();
                   ),
                   filled: false,
                 ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter email';
+                  }
+                  return null;
+                },
               ),
               Padding(
                 padding: EdgeInsets.all(7.0),
               ),
-              TextField(
+              TextFormField(
+                onSaved: (input) => _loginpassword = input,
                 obscureText: _isHidden,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.lock, color: Colors.black),
@@ -146,6 +189,12 @@ TextEditingController usernameController = new TextEditingController();
                   contentPadding: EdgeInsets.fromLTRB(15.0, 15.0, 20.0, 15.0),
                   filled: false,
                 ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter password';
+                  }
+                  return null;
+                },
               ),
               
               Padding(
@@ -172,11 +221,12 @@ TextEditingController usernameController = new TextEditingController();
                   child: new Text("Login", style: TextStyle(fontFamily: 'WorkSans'),), 
                   color: Colors.lightBlue[700],
                   shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                  onPressed: () {
-                    Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => NBNavigation()),
-                    );
-                  },
+                  onPressed: loginWithWithEmailPassword,
+                  //() {
+                    // Navigator.push(
+                    //   context, MaterialPageRoute(builder: (context) => NBNavigation()),
+                    // );
+                  //},
                 ),
               ),
 
@@ -204,9 +254,7 @@ TextEditingController usernameController = new TextEditingController();
                   SizedBox(height: 10.0),
                     GoogleSignInButton(
                     onPressed: () {
-                      Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => NBNavigation()),
-                      );
+                      doLogin();
                     },
                   ),
                 ],
@@ -216,140 +264,9 @@ TextEditingController usernameController = new TextEditingController();
         ), 
       ),
     );
-  }
-}
-
-class SignUpState extends StatefulWidget{
-  @override
-  SignUp createState() => SignUp();
-}
-
-class SignUp extends State<SignUpState> {
-  TextEditingController usernameController = new TextEditingController();
-  TextEditingController emailController = new TextEditingController();
-  TextEditingController passwordController = new TextEditingController();
-  final FirebaseAuth mAuth = FirebaseAuth.instance;
-
-
-  final _formKey = GlobalKey<FormState>();
-
-  bool _isHidden = true;
-
-  void _toggleVisibility(){
-    setState(() {
-      _isHidden = !_isHidden;
-    });
-  }
-
-void signUpWithEmailPassword()
-    async {
-      FirebaseUser user = await mAuth.createUserWithEmailAndPassword(
-        email: emailController.text, 
-        password: passwordController.text
-      );
-    }
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      // debugShowCheckedModeBanner: false,
-      //home: new Scaffold(
-      key: _formKey,
-        child: Scaffold(
-        body: SafeArea(
-          child: ListView(
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
-            children: <Widget>[
-              SizedBox(height: 100.0),
-              TextFormField(
-                //controller: usernameController,
-                decoration: InputDecoration(
-                  hintText: "Username",
-                  border: OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(12.0),
-                  ),
-                  contentPadding: EdgeInsets.fromLTRB(15.0, 15.0, 20.0, 15.0),
-                  filled: false,
-                ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Username is required';
-                  }
-                  return null;
-                },
-                //onSaved: (value),
-              ),
-              Padding(
-                padding: EdgeInsets.all(7.0),
-              ),
-              TextFormField(
-                controller: emailController,
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Email is required';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  hintText: "Email",
-                  border: OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(12.0),
-                  ),
-                  contentPadding: EdgeInsets.fromLTRB(15.0, 15.0, 20.0, 15.0),
-                  filled: false,
-                ),
-                
-              ),
-              Padding(
-                padding: EdgeInsets.all(7.0),
-              ),
-              TextFormField(
-                controller: passwordController,
-                obscureText: _isHidden,
-                decoration: InputDecoration(
-                  suffixIcon: IconButton(
-                    icon: _isHidden ? Icon(Icons.visibility_off, color: Colors.black,) : Icon(Icons.visibility, color: Colors.black,),
-                    onPressed: _toggleVisibility,
-                  ),
-                  hintText: "Password",
-                  border: OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(12.0),
-                  ),
-                  contentPadding: EdgeInsets.fromLTRB(15.0, 15.0, 20.0, 15.0),
-                  filled: false,
-                ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Password is required';
-                  }
-                  return null;
-                },
-              ),
-              Padding(
-                padding: EdgeInsets.all(7.0),
-              ),
-              new Container(
-              child: new MaterialButton(
-                  minWidth: 10.0,
-                  //padding: EdgeInsets.symmetric(horizontal: 50.0),
-                  child: new Text("Register"), 
-                  color: Colors.lightBlue[700],
-                  shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                  onPressed: () {
-                    if (_formKey.currentState.validate()) {
-                      signUpWithEmailPassword();
-                      Navigator.push(
-                         context, MaterialPageRoute(builder: (context) => NBNavigation()),
-                     );
-                    }
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+  // TextEditingController loginEmailController = new TextEditingController();
+  // TextEditingController loginpasswordController = new TextEditingController();
+  
 
   }
 }

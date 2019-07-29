@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:custom_haven/screens/profile.dart';
-import 'package:custom_haven/widgets/custom_card.dart';
-import 'package:custom_haven/screens/home.dart';
+//import 'package:custom_haven/widgets/custom_card.dart';
+//import 'package:custom_haven/screens/home.dart';
 import 'package:flutter/rendering.dart';
-import 'package:custom_haven/widgets/store.dart';
+//import 'package:custom_haven/widgets/store.dart';
 
 
 class CartState extends StatefulWidget{

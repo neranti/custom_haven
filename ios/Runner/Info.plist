@@ -51,6 +51,11 @@
 				<!-- Copied from GoogleServices-Info.plist key REVERSED_CLIENT_ID -->
 				<string>com.googleusercontent.apps.975632830435-kihtmrks3pdlmo68i8k8ase4ia5uf0hv</string>
 			</array>
+			<key>NSPhotoLibraryUsageDescription</key>
+			<string>Allow permission to access PhotoGallery?</string><key>NSMicrophoneUsageDescription</key>
+			<string>Can I use the mic please?</string>
+			<key>NSCameraUsageDescription</key>
+			<string>Can I use camera please?</string>
 		</dict>
 	</array>
 </dict>

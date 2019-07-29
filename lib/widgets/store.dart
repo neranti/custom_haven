@@ -12,9 +12,9 @@ List<ShoeCardData> getCustomCards(){
 
     ShoeCardData(
       id: '1',
-      name: 'Red Bape Vans',
-      designerName: 'Designer Name',
-      price: '\$120',
+      name: 'Blue Bape Vans',
+      designerName: 'Designer Logo',
+      price: '\$130',
       image: 'assets/redbapevans',
     )
   ];
@@ -23,7 +23,7 @@ List<ShoeCardData> getCustomCards(){
 List<String> getCartIDs() {
   return [
     '0',
-    '1',
+    '2',
     //'2',
   ];
 }

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'screens/login.dart';
-import 'package:provider/provider.dart';
-import 'package:custom_haven/screens/home.dart';
-import 'package:custom_haven/widgets/add_to_cart.dart';
 
-void main() => runApp(Testing());
+
+void main() => runApp(LogInFunction());
 
 
 class HomeRoute extends StatelessWidget {
